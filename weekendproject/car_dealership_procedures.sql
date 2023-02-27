@@ -4,7 +4,8 @@ CREATE OR REPLACE PROCEDURE new_car(
 	year_ INT,
 	color_ VARCHAR,
 	serial_Number_ VARCHAR,
-	car_For_Sale_ BOOLEAN
+	car_For_Sale_ BOOLEAN,
+	price_of_sale_ FLOAT4
 )
 LANGUAGE plpgsql AS $$
 BEGIN 
@@ -14,31 +15,35 @@ BEGIN
 		"year",
 		color,
 		serial_number,
-		car_for_sale
+		car_for_sale,
+		price_of_sale
 	)VALUES(
 		make_,
 		model_,
 		year_,
 		color_,
 		serial_Number_,
-		car_For_Sale_ 
+		car_For_Sale_,
+		price_of_sale_
 	);
 END;
 $$
 
-CALL new_car('Ford', 'F-150', 2023, 'FO2X4451KL122-89RD', 'Silver', TRUE);
-CALL new_car('Audi', 'A8', 2020, 'AU3557B981SD2335-74DI', FALSE);
-CALL new_car('Honda', 'Accord', 2021, 'HO718K239JU7435-2NDA', 'Metalic RED', TRUE);
-CALL new_car('McLaren', 'McLaren-F1', 1994, 'MC34583LA-1REN', 'Black', FALSE);
-CALL new_car('Ford', 'Explorer', 2023, 'FO45H4958SR357-09RD', 'Pearl White', TRUE);
-CALL new_car('Ford', 'Bronco Sport', 2022, 'FO7667HG2903K117-34RD', 'Sky Blue', TRUE);
+CALL new_car('Ford', 'F-150', 2023, 'FO2X4451KL122-89RD', 'Silver', TRUE, 65000.00);
+CALL new_car('Audi', 'A8', 2020, 'AU3557B981SD2335-74DI', 'Green', FALSE, 110000.00);
+CALL new_car('Honda', 'Accord', 2021, 'HO718K239JU7435-2NDA', 'Metalic RED', TRUE, 23000.00);
+CALL new_car('McLaren', 'McLaren-F1', 1994, 'MC34583LA-1REN', 'Black', FALSE, 1600000.00);
+CALL new_car('Ford', 'Explorer', 2023, 'FO45H4958SR357-09RD', 'Pearl White', TRUE, 50000.00);
+CALL new_car('Ford', 'Bronco Sport', 2022, 'FO7667HG2903K117-34RD', 'Sky Blue', TRUE, 60000.00);
+
+SELECT *
+FROM car;
 
 CREATE OR REPLACE PROCEDURE new_sales_invoice(
 	salesperoId INT,
 	carId INT,
 	customerId INT,
-	date_ VARCHAR,
-	price_OF_Sale_ FLOAT
+	date_ VARCHAR
 )
 LANGUAGE plpgsql AS $$
 BEGIN 
@@ -46,21 +51,19 @@ BEGIN
 		salesperson_id,
 		car_id,
 		customer_id,
-		"date",
-		price_of_sale
+		"date"
 	)VALUES(
 		salesperoId,
 		carId,
 		customerId,
-		date_,
-		price_OF_Sale_
+		date_
 	);
 END;
 $$
 
-CALL new_sales_invoice(1, 1, 1, '2022-10-07', 60000.00);
-CALL new_sales_invoice(2, 5, 2, '2023-01-14', 65000.00);
-CALL new_sales_invoice(3, 4, 3, '2022-07-04', 1600000.00);
+CALL new_sales_invoice(1, 1, 1, '2022-10-07');
+CALL new_sales_invoice(2, 2, 2, '2023-01-14');
+CALL new_sales_invoice(3, 3, 3, '2022-07-04');
 
 
 CREATE OR REPLACE PROCEDURE new_salesperson(
@@ -78,12 +81,6 @@ BEGIN
 	);
 END;
 $$
-
-SELECT *
-FROM customer
-
-SELECT *
-FROM salesperson; 
 
 CALL new_salesperson('Nehemiah', 'Nicholson');
 CALL new_salesperson('Blane', 'Severson');
@@ -160,7 +157,7 @@ END;
 $$
 
 CALL new_service_ticket(1, 1, '2023-01-23', 'Brake pads getting thin.', '2023-01-23', 50.00);
-CALL new_service_ticket(3, 2, '2023-01-28', 'Tires tred getting low', '2023-01-29', 2500.00); 
+CALL new_service_ticket(2, 2, '2023-01-28', 'Tires tred getting low', '2023-01-29', 2500.00); 
 
 CREATE OR REPLACE PROCEDURE new_mechanic(
 	first_Name_ VARCHAR,
